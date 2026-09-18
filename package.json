@@ -1,0 +1,31 @@
+{
+  "name": "frontier-model-evals",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Capability + risk evaluation harness for frontier LLMs via OpenRouter (ai-sdk based)",
+  "license": "Unlicense",
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "scripts": {
+    "eval": "tsx src/cli.ts",
+    "eval:node": "node --experimental-strip-types src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "esbuild src/cli.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/cli.js",
+    "models:list": "tsx src/tools/live-models.ts",
+    "report:csv": "tsx src/report/to-csv.ts",
+    "report:md": "tsx src/report/to-md.ts"
+  },
+  "dependencies": {
+    "ai": "^7.0.0",
+    "@openrouter/ai-sdk-provider": "^3.0.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "tsx": "^4.19.0",
+    "esbuild": "^0.24.0",
+    "@types/node": "^22.10.0"
+  }
+}

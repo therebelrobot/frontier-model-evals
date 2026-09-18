@@ -1,0 +1,42 @@
+# Starter config for the broad, cheap capability matrix. promptfoo is the
+# right tool for "same prompt, many models, assertion-based grading" — use
+# it for quick breadth checks; reach for src/cli.ts (the custom ai-sdk
+# harness) for anything needing real tool loops, injection fixtures, or
+# per-model cost logged next to the grade.
+#
+# Run from repo root: npx promptfoo eval -c promptfoo/promptfooconfig.yaml
+# Requires OPENROUTER_API_KEY in your environment (promptfoo reads it
+# directly — no extra config needed for the `openrouter:` provider prefix).
+#
+# Verify this schema against https://promptfoo.dev/docs before relying on
+# it — promptfoo's config format has evolved and this is a starting point,
+# not a guarantee of current field names.
+
+description: Frontier model capability matrix (breadth pass)
+
+providers:
+  # Hard rule: never add openai/* or x-ai/* here (see src/config/models.ts).
+  - openrouter:anthropic/claude-sonnet-4.5
+  - openrouter:google/gemini-2.5-pro
+  - openrouter:deepseek/deepseek-v4-flash
+
+prompts:
+  - |
+    Extract the requested fields from this note into JSON matching
+    {{schema}}. Output only JSON, no prose.
+
+    Note: {{note}}
+
+tests:
+  - vars:
+      schema: '{"chiefComplaint": string, "durationDays": number, "redFlags": string[]}'
+      note: >
+        Patient reports a persistent headache for the last 9 days, worse in
+        the mornings, with new blurred vision in the left eye since
+        yesterday. No fever. No prior migraine history.
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const parsed = JSON.parse(output);
+          return typeof parsed.durationDays === 'number' && parsed.durationDays === 9;

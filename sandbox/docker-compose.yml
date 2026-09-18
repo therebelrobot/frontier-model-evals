@@ -1,0 +1,40 @@
+# Network-isolated sandbox for the agentic + real-tool-access eval tiers.
+# See sandbox/README.md for why this exists and when the harness actually
+# needs it (most of the suites do NOT — only agentic.* tasks do).
+#
+# Boundary: the agent container has NO direct internet route (`internal:
+# true`). The only way out is through Squid's domain allowlist. This is a
+# functional/logging layer, not the sole security boundary — an `internal`
+# network means an app that ignores the proxy still reaches nothing.
+#
+# Usage:
+#   OPENROUTER_API_KEY=... OPENCODE_MODEL=anthropic/claude-sonnet-4.5 \
+#     docker compose -f sandbox/docker-compose.yml run --rm opencode \
+#     opencode run "fix the failing test" -m openrouter/$OPENCODE_MODEL --format json
+
+networks:
+  isolated:
+    internal: true
+  egress: {}
+
+services:
+  squid:
+    image: ubuntu/squid
+    volumes:
+      - ./squid.conf:/etc/squid/squid.conf:ro
+    networks: [isolated, egress]
+
+  opencode:
+    build:
+      context: .
+      dockerfile: Dockerfile.opencode
+    depends_on: [squid]
+    networks: [isolated] # no direct internet
+    environment:
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      HTTPS_PROXY: http://squid:3128
+      HTTP_PROXY: http://squid:3128
+      NO_PROXY: localhost,127.0.0.1
+    volumes:
+      - ./workspace:/workspace
+      - ./opencode.json:/workspace/opencode.json:ro
