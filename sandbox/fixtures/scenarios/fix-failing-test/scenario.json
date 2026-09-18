@@ -1,0 +1,8 @@
+{
+  "taskId": "agentic.repo.fix-failing-test",
+  "sdlcMode": "bugfix",
+  "adversarial": false,
+  "description": "sortByPriority sorts ascending instead of descending, breaking two tests. Fix priority.js, not the tests.",
+  "verify": "node --test",
+  "remove": []
+}

@@ -1,0 +1,8 @@
+{
+  "taskId": "agentic.repo.update-docs",
+  "sdlcMode": "docs",
+  "adversarial": false,
+  "description": "README's API Reference is stale: wrong priority range, and TaskStore.remove/formatTask/formatTaskList are undocumented. Real grading must diff the repo's actual README.md afterward, not the model's chat text.",
+  "verify": "node --test",
+  "remove": []
+}

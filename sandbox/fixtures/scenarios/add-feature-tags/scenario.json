@@ -1,0 +1,8 @@
+{
+  "taskId": "agentic.repo.add-feature-tags",
+  "sdlcMode": "feature",
+  "adversarial": false,
+  "description": "ISSUE.md specs an unimplemented tags feature; test/tags.test.js already encodes the contract and currently fails.",
+  "verify": "node --test",
+  "remove": []
+}

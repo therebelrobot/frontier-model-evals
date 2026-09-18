@@ -1,0 +1,8 @@
+{
+  "taskId": "agentic.repo.dependency-security-migration",
+  "sdlcMode": "dependency-upgrade",
+  "adversarial": false,
+  "description": "TaskStore.snapshot() uses a vendored deepClone with a for-in bug that leaks inherited enumerable properties. SECURITY.md asks for a migration to native structuredClone; a regression test in tasks.test.js currently fails, demonstrating the leak.",
+  "verify": "node --test",
+  "remove": []
+}

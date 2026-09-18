@@ -1,0 +1,8 @@
+{
+  "taskId": "agentic.repo.write-missing-tests",
+  "sdlcMode": "testing",
+  "adversarial": false,
+  "description": "test/format.test.js is deleted, leaving src/format.js uncovered. Deterministic grading only checks that new tests pass; whether they'd actually catch a regression needs manual/mutation review.",
+  "verify": "node --test",
+  "remove": ["test/format.test.js"]
+}

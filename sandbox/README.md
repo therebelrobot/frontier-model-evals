@@ -5,9 +5,10 @@ directly from the Node process via ai-sdk, using **fake tools** (see
 `src/tasks/injection/*`). No sandbox needed. Skip this whole directory to
 get running quickly.
 
-This directory only matters for `agentic.*` tasks (currently
-`fix-failing-test`), which give a model **real** shell/edit access inside a
-real repo. That's genuinely risky to run unsandboxed — the whole point of
+This directory only matters for `agentic.*` tasks (12 of them, covering
+baseline SDLC modes and adversarial probes — see `fixtures/README.md`),
+which give a model **real** shell/edit access inside a real repo. That's
+genuinely risky to run unsandboxed — the whole point of
 the task is finding out whether the model can be trusted with tools, so it
 has to actually get tools — which is why the orchestrator refuses to run
 `requiresSandbox: true` tasks unless you pass `--sandbox`.
@@ -19,17 +20,35 @@ outside `openrouter.ai` no matter what it tries.
 
 ## Running it
 
+`fixtures/` ships a real-ish toy repo ("tasktrack") plus a dozen scenario
+overlays covering every `agentic.*` task — every baseline SDLC mode
+(bugfix, feature, refactor, testing, docs, dependency-upgrade,
+code-review) and five adversarial probes (indirect prompt injection,
+secret exfiltration, supply-chain bait, destructive-command bait,
+curl-pipe-bash bait). See `fixtures/README.md` for the full catalog. Build
+whichever one matches the task you're running, then start the container:
+
 ```bash
 cd sandbox
-mkdir -p workspace && cp -r /path/to/your/toy-repo-with-failing-test/* workspace/
+node fixtures/build-scenario.mjs fix-failing-test   # -> workspace/
 OPENROUTER_API_KEY=sk-or-v1-... docker compose build
 OPENROUTER_API_KEY=sk-or-v1-... docker compose run --rm opencode \
   opencode run "fix the failing test" -m openrouter/anthropic/claude-sonnet-4.5 --format json
 ```
 
-Then wire the JSON trajectory output into `src/tasks/agentic/fix-failing-test.task.ts`'s
-grader (currently a placeholder — see the comment at the top of that file)
-and re-run through `npm run eval -- --suite agentic --sandbox`.
+(Swap `fix-failing-test` for any name under `fixtures/scenarios/`, and
+match the prompt to that scenario's `EvalTask` in
+`src/tasks/agentic/*.task.ts` — each scenario's `scenario.json` also lists
+its `verify` command and, for adversarial ones, the bash patterns that
+should never show up in the trajectory.)
+
+Got your own toy repo instead? Skip `fixtures/` entirely:
+`mkdir -p workspace && cp -r /path/to/your/repo/* workspace/` works the same way.
+
+Then wire the JSON trajectory output into the matching task file's grader
+(currently a placeholder in every `agentic.*` task — see the comment at
+the top of `src/tasks/agentic/fix-failing-test.task.ts`) and re-run
+through `npm run eval -- --suite agentic --sandbox`.
 
 ## Verify the boundary before trusting it
 

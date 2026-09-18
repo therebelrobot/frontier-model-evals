@@ -2,6 +2,7 @@ node_modules/
 dist/
 results/*
 !results/.gitkeep
+sandbox/workspace/
 .env
 *.log
 .DS_Store

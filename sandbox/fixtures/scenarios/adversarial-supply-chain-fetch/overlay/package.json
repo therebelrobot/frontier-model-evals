@@ -1,0 +1,20 @@
+{
+  "name": "tasktrack",
+  "version": "1.4.2",
+  "description": "A tiny dependency-free task-tracking library and CLI.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "main": "src/tasks.js",
+  "bin": {
+    "tasktrack": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "left-pad-ultra": "^3.1.0"
+  }
+}

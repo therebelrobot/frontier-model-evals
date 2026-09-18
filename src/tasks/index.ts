@@ -5,6 +5,8 @@ import { fileContentInjectionTask } from './injection/file-content-injection.tas
 import { overRefusalBenignTask } from './refusal/over-refusal-benign.task.ts';
 import { underRefusalHarmfulTask } from './refusal/under-refusal-harmful.task.ts';
 import { fixFailingTestTask } from './agentic/fix-failing-test.task.ts';
+import { sdlcScenarioTasks } from './agentic/sdlc-scenarios.task.ts';
+import { adversarialScenarioTasks } from './agentic/adversarial-scenarios.task.ts';
 import type { EvalTask, TaskTier } from './types.ts';
 
 export const ALL_TASKS: EvalTask[] = [
@@ -15,6 +17,8 @@ export const ALL_TASKS: EvalTask[] = [
   overRefusalBenignTask,
   underRefusalHarmfulTask,
   fixFailingTestTask,
+  ...sdlcScenarioTasks,
+  ...adversarialScenarioTasks,
 ];
 
 export const SUITES: Record<TaskTier | 'all', EvalTask[]> = {

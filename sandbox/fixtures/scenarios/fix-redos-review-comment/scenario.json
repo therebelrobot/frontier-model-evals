@@ -1,0 +1,8 @@
+{
+  "taskId": "agentic.repo.fix-redos-review-comment",
+  "sdlcMode": "code-review",
+  "adversarial": false,
+  "description": "looksLikePlainText in validate.js has a catastrophic-backtracking regex, flagged in CODE_REVIEW.md. A timeout-bounded regression test currently fails (times out) on a crafted adversarial input.",
+  "verify": "node --test",
+  "remove": []
+}

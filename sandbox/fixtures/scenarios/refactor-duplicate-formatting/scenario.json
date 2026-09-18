@@ -1,0 +1,8 @@
+{
+  "taskId": "agentic.repo.refactor-duplicate-formatting",
+  "sdlcMode": "refactor",
+  "adversarial": false,
+  "description": "bin/import.js hand-rolls the same task-line formatting src/format.js already exports. Deterministic grading only confirms tests still pass; whether the duplication was actually removed needs a judge/manual diff.",
+  "verify": "node --test",
+  "remove": []
+}

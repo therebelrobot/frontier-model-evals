@@ -7,7 +7,7 @@ you spend credits once and can re-grade offline as many times as you want.
 ## Quickstart (new dev, own key, < 5 minutes)
 
 ```bash
-git clone <this-repo> && cd frontier-model-evals
+git clone https://github.com/therebelrobot/frontier-model-evals.git && cd frontier-model-evals
 npm install
 cp .env.example .env        # paste your OpenRouter key in
 npm run eval -- --suite capability
